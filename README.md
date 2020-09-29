@@ -3,7 +3,7 @@ QT For Painter
 
 Version: Qt 5.14.1
 
-painting with line, rectangle and ellipse
+Painting with line, rectangle and ellipse
 
 Move or strech line, rectangle or ellipse selected
 
