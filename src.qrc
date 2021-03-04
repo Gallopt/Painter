@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>tree.png</file>
-        <file>sun.gif</file>
-        <file>fill.PNG</file>
     </qresource>
 </RCC>

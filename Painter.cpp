@@ -1,12 +1,6 @@
 ﻿#include "Painter.h"
 #include "ui_Painter.h"
 
-#include "Shape.h"
-#include "Outline.h"
-#include "Beeline.h"
-#include "Rectangle.h"
-#include "Ellipse.h"
-
 #include <QDebug>
 #include <QFileDialog>
 #include <QToolBar>
@@ -25,7 +19,6 @@
 #include <QLabel>
 #include <QToolButton>
 #include <QRandomGenerator>
-#include <QMovie>
 
 
 Painter::Painter(QWidget *parent)
@@ -33,13 +26,8 @@ Painter::Painter(QWidget *parent)
     , ui(new Ui::Painter)
 {
     ui->setupUi(this);
-    setFixedSize(1000,800);
-
-    //    setMouseTracking(true);
-
+    setFixedSize(1580,935);
     pix.fill(QColor(Qt::white));
-    //    pix.transformed();
-
 
     //工具栏
     QToolBar *toolBar =addToolBar("toolBar");
@@ -55,9 +43,9 @@ Painter::Painter(QWidget *parent)
     saveXml->setText("SaveXml");
     toolBar->addAction(saveXml);
     //打开xml文件
-    QAction *loadXmlBtn = new QAction(this);
-    loadXmlBtn->setText("OpenXml");
-    toolBar->addAction(loadXmlBtn);
+//    QAction *loadXmlBtn = new QAction(this);
+//    loadXmlBtn->setText("OpenXml");
+//    toolBar->addAction(loadXmlBtn);
     //放大画笔
     QAction *maxPenBtn = new QAction(this);
     maxPenBtn->setText("+");
@@ -85,9 +73,9 @@ Painter::Painter(QWidget *parent)
     //    QAction *fillBtn = new QAction(this);
     //    fillBtn->setText("Fill");
     //    toolBar->addAction(fillBtn);
-    QAction *fill4Btn = new QAction(this);
-    fill4Btn->setText("Fill4");
-    toolBar->addAction(fill4Btn);
+//    QAction *fill4Btn = new QAction(this);
+//    fill4Btn->setText("Fill");
+//    toolBar->addAction(fill4Btn);
     //Pattern
     QAction *patternBtn = new QAction(this);
     patternBtn->setText("Pattern");
@@ -109,16 +97,16 @@ Painter::Painter(QWidget *parent)
     ellipseBtn->setText("Ellipse");
     toolBar->addAction(ellipseBtn);
     //删除形状
-    QAction *deleteBtn = new QAction(this);
-    deleteBtn->setText("Delete");
-    toolBar->addAction(deleteBtn);//选中当前形状，删除存储的点，最后更新画布
+//    QAction *deleteBtn = new QAction(this);
+//    deleteBtn->setText("Delete");
+//    toolBar->addAction(deleteBtn);//选中当前形状，删除存储的点，最后更新画布
     //清空
     QAction *clearBtn = new QAction(this);
     clearBtn->setText("Clear");
     toolBar->addAction(clearBtn);
 
     QToolButton *white = new QToolButton(this);
-    white->setGeometry(10,770,40,30);
+    white->setGeometry(10,900,40,30);
     //    white->setText("White");
     white->setAutoRaise(true);
     white->setStyleSheet("background:white");
@@ -128,7 +116,7 @@ Painter::Painter(QWidget *parent)
 
 
     QToolButton *black = new QToolButton(this);
-    black->setGeometry(70,770,40,30);
+    black->setGeometry(70,900,40,30);
     //    black->setText("Black");
     black->setAutoRaise(true);
     black->setStyleSheet("background:black;color:white");
@@ -137,7 +125,7 @@ Painter::Painter(QWidget *parent)
     black->setDefaultAction(blackBtn);
 
     QToolButton *red = new QToolButton(this);
-    red->setGeometry(130,770,40,30);
+    red->setGeometry(130,900,40,30);
     //    red->setText("Red");
     red->setAutoRaise(true);
     red->setStyleSheet("background:red;color:white");
@@ -146,7 +134,7 @@ Painter::Painter(QWidget *parent)
     red->setDefaultAction(redBtn);
 
     QToolButton *blue = new QToolButton(this);
-    blue->setGeometry(190,770,40,30);
+    blue->setGeometry(190,900,40,30);
     //    blue->setText("Blue");
     blue->setAutoRaise(true);
     blue->setStyleSheet("background:blue;color:white");
@@ -155,7 +143,7 @@ Painter::Painter(QWidget *parent)
     blue->setDefaultAction(blueBtn);
 
     QToolButton *magenta = new QToolButton(this);
-    magenta->setGeometry(250,770,40,30);
+    magenta->setGeometry(250,900,40,30);
     //    purple->setText("Magenta");
     magenta->setAutoRaise(true);
     magenta->setStyleSheet("background:magenta;color:white");
@@ -164,7 +152,7 @@ Painter::Painter(QWidget *parent)
     magenta->setDefaultAction(magentaBtn);
 
     QToolButton *green = new QToolButton(this);
-    green->setGeometry(310,770,40,30);
+    green->setGeometry(310,900,40,30);
     //    green->setText("Green");
     green->setAutoRaise(true);
     green->setStyleSheet("background:green;color:white");
@@ -173,7 +161,7 @@ Painter::Painter(QWidget *parent)
     green->setDefaultAction(greenBtn);
 
     QToolButton *cyan = new QToolButton(this);
-    cyan->setGeometry(370,770,40,30);
+    cyan->setGeometry(370,900,40,30);
     //    cyan->setText("Cyan");
     cyan->setAutoRaise(true);
     cyan->setStyleSheet("background:cyan");
@@ -182,7 +170,7 @@ Painter::Painter(QWidget *parent)
     cyan->setDefaultAction(cyanBtn);
 
     QToolButton *yellow = new QToolButton(this);
-    yellow->setGeometry(430,770,40,30);
+    yellow->setGeometry(430,900,40,30);
     //    yellow->setText("Yellow");
     yellow->setAutoRaise(true);
     yellow->setStyleSheet("background:yellow");
@@ -191,19 +179,19 @@ Painter::Painter(QWidget *parent)
     yellow->setDefaultAction(yellowBtn);
 
     QToolButton *randomColor = new QToolButton(this);
-    randomColor->setGeometry(490,770,40,30);
+    randomColor->setGeometry(490,900,40,30);
     //    randomColor->setText("RColor");(10,770,40,30);
     randomColor->setAutoRaise(true);
     QAction *randomColorBtn = new QAction(this);
     randomColorBtn->setText("Radom");
     randomColor->setDefaultAction(randomColorBtn);
 
-    QToolButton *presentColor = new QToolButton(this);
-    presentColor->setGeometry(960,770,40,30);
-    //    randomColor->setText("RColor");(10,770,40,30);
-    randomColor->setAutoRaise(true);
-    QAction *presentColorBtn = new QAction(this);
-    presentColor->setDefaultAction(presentColorBtn);
+//    QToolButton *presentColor = new QToolButton(this);
+//    presentColor->setGeometry(960,770,40,30);
+//    //    randomColor->setText("RColor");(10,770,40,30);
+//    randomColor->setAutoRaise(true);
+//    QAction *presentColorBtn = new QAction(this);
+//    presentColor->setDefaultAction(presentColorBtn);
 
     //点击事件
     connect(saveBtn , &QAction::triggered,[=](){
@@ -213,16 +201,16 @@ Painter::Painter(QWidget *parent)
         lines.clear();
         rects.clear();
         QString picture = QString("PNG (*.PNG);;BMP (*.bmp);;JPEG (*.jpg *.jpeg);;Text files (*.txt);;XML files (*.xml)");
-        QString fileName = QFileDialog::getSaveFileName(this,"Save Picture","",picture);//QFileDialog::getSaveFileName(this, "Save_Picture",path,picture);
+        QString fileName = QFileDialog::getSaveFileName(this,"Save Picture","",picture);
         if(!fileName.isNull())
             pix.save(fileName);//保存模板图片，部分》》pix
     });
     connect(saveXml , &QAction::triggered,[=](){//保存为Xml文件
         saveXML();
     });
-    connect(loadXmlBtn , &QAction::triggered,[=](){//打开Xml文件
-        loadXML();
-    });
+//    connect(loadXmlBtn , &QAction::triggered,[=](){//打开Xml文件
+//        loadXML();
+//    });
     connect(maxPenBtn , &QAction::triggered,[=](){
         clickRect = false;
         clickLine = false;
@@ -253,8 +241,6 @@ Painter::Painter(QWidget *parent)
         rects.clear();
         update();
         drawType = UseMouse;
-
-
     });
     connect(eraserBtn , &QAction::triggered,[=](){
         clickRect = false;
@@ -279,14 +265,14 @@ Painter::Painter(QWidget *parent)
         drawPicture();
     });
 
-    connect(fill4Btn, &QAction::triggered,[=](){
-        clickRect = false;
-        clickLine = false;
-        clickEllipse = false;
-        drawType = FillPolygon;
-        _color = QColorDialog::getColor(Qt::red, this,"Select Color",QColorDialog::ShowAlphaChannel);
-        fill();
-    });
+//    connect(fill4Btn, &QAction::triggered,[=](){
+//        clickRect = false;
+//        clickLine = false;
+//        clickEllipse = false;
+//        drawType = FillPolygon;
+//        _color = QColorDialog::getColor(Qt::red, this,"Select Color",QColorDialog::ShowAlphaChannel);
+//        fill();
+//    });
     connect(randomColorBtn, &QAction::triggered,[=](){
         clickRect = false;
         clickLine = false;
@@ -413,15 +399,17 @@ Painter::Painter(QWidget *parent)
         drawType = UseEllipse;
         update();
     });
-    connect(deleteBtn , &QAction::triggered,[=](){
-        perDeletee = true;
-        ellipses.clear();
-        lines.clear();
-        rects.clear();
-    });
+//    connect(deleteBtn , &QAction::triggered,[=](){
+//        perDeletee = true;
+//        ellipses.clear();
+//        lines.clear();
+//        rects.clear();
+//    });
     connect(clearBtn , &QAction::triggered,[=](){
         //        startPoint = QPoint(-1,-1);
         //        movePoint = QPoint(-1,-1);
+        typeCounts.clear();
+        times = 0;
         cPoints.clear();
         clickRect = false;
         clickLine = false;
@@ -443,13 +431,13 @@ Painter::Painter(QWidget *parent)
         qDebug() <<"isdrawType:"<<drawType;
     });
 
-    QPen bGroundPen;
-    bGroundPen.setColor(Qt::white);
-    myPaintPath.addRect(QRect(QPoint(0,22),QPoint(1000,749)));//两张布，底布为白色，顶布为透明色
+    //QPen bGroundPen;
+    //bGroundPen.setColor(Qt::white);
+    //myPaintPath.addRect(QRect(QPoint(0,22),QPoint(1000,749)));//两张布，底布为白色，顶布为透明色
     //    p.setPen(bGroundPen);
     //        p.drawPath(myPaintPath);
-    myPainterPaths.append(myPaintPath);
-    allPainterPath.addPath(myPaintPath);
+    //myPainterPaths.append(myPaintPath);
+    //allPainterPath.addPath(myPaintPath);
     myPaintPath.clear();/**/
 
 }
@@ -468,8 +456,7 @@ void Painter::paintPath(){
     case UseMouse:
         if(perPoint.size())
         {
-
-            //        for (int i = 0; i<perPoint.size(); i++) {
+            //for (int i = 0; i<perPoint.size(); i++) {
             QPoint sPoint;
             sPoint = QPoint(perPoint.last().first());
             myPaintPath.moveTo(sPoint);
@@ -477,7 +464,7 @@ void Painter::paintPath(){
                 myPaintPath.lineTo(perPoint.last()[i]);
             }
             myPainterPaths.append(myPaintPath);
-            allPainterPath.addPath(myPaintPath);//->
+            allPainterPath.addPath(myPaintPath);
             myPaintPath.clear();
             //        }
         }
@@ -518,17 +505,15 @@ void Painter::paintPath(){
             //        }
         }
         break;
-
     }
-
 }
 
 void Painter::paintEvent(QPaintEvent *)
 {
-    tmpPixmap = QPixmap (pix );
+    tmpPixmap = QPixmap (pix);
 
-    QPainter paint (&pix );
-    QPainter p (this );
+    QPainter paint (&pix);
+    QPainter p(this);
     QPainter tmpPaint (&tmpPixmap );//临时画布
 
 //    paint.setRenderHints(QPainter::Antialiasing, true);//消锯齿
@@ -544,9 +529,9 @@ void Painter::paintEvent(QPaintEvent *)
     pen.setJoinStyle(Qt::RoundJoin);
     tmpPaint.setPen(pen);
 
-    if(isDrawing)//先画到临时画布上，鼠标动一次画一次，释放鼠标时再画到最终界面上
+    if(isDrawing)//先画到临时画布上，鼠标动一次画一次，释放鼠标时再画到最终画布上
         switch (drawType) {
-        case UseMouse://曲线直接画到最终界面
+        case UseMouse:
         {//movePoint 不会重置，会记录上一次的位置
             paint.setPen(pen);
             paint.drawLine(moveStartPoint,movePoint);
@@ -701,8 +686,8 @@ void Painter::paintEvent(QPaintEvent *)
             QPainterPathStroker stroker;
             stroker.setCapStyle(Qt::RoundCap);
             stroker.setWidth(penWidth);     // 生成一个新路径（可填充区域），表示原始路径 path 的轮廓
-            QPainterPath outlinePath = stroker.createStroke(myPainterPaths[element]);
-            //                }
+            //QPainterPath outlinePath = stroker.createStroke(myPainterPaths[element]);
+            //}
             qDebug()<<"Element"<<element;
             QPen pen;
 //            pen.setWidthF(0.5);
@@ -712,58 +697,91 @@ void Painter::paintEvent(QPaintEvent *)
             QColor oldColor = image.pixelColor(startPoint);
             //QPoint seedPoint = startPoint;
             QPoint ppoint = startPoint;
-            uchar *line;
-            line = image.scanLine(ppoint.x());
+//            uchar *line;  //扫描线
+//            line = image.scanLine(ppoint.x());
             if(drawRange.contains(ppoint) && oldColor != _color)//画上点的颜色与要填充的颜色不同
             {
-                //                paint.drawPoint(point);
+                //paint.drawPoint(point);
                 if(image.pixelColor(startPoint) == _color)
                     return;
 
                 QStack<QPoint> *stack = new QStack<QPoint>;
-                stack->push(ppoint);//种子点
+                stack->push(ppoint);//种子
+#if 0
+                while(!stack->isEmpty())
+                {//第一次记录下两端点
+                    QPoint point = stack->pop();
+                    int L, R;
+                    L = R = point.x();
+                    while( image.pixelColor( QPoint(R, point.y())) == oldColor && R < 1000)
+                    {
+                        paint.drawPoint(QPoint(R,point.y()));
+                        image = pix.toImage();
+                        R++;
+                    }
+                    R--;
+                    while( image.pixelColor( QPoint(L, point.y())) == oldColor && L > 0)
+                    {
+                        paint.drawPoint( QPoint(L, point.y()));
+                        image = pix.toImage();
+                        L--;
+                    }
+                    L++;
+                };
+#endif
+
+                /*最底图层用painterpath画矩形，可直接填充(也就是说填充不能遮盖住上面的图层咋做)
+                 * 之后画的封闭图形为它上面的图层，未封闭的图形在当前图层上(这里填充时也不能盖住未封闭图形)
+                 *
+                 */
+
                 while (!stack->isEmpty())
                 {//第一次循环，种子点出栈，该行涂色
                     QPoint point = stack->pop();
-                    qDebug()<<"oldColor"<<QColor(oldColor);
-                    qDebug()<<"PopPoint"<<point;
-                    qDebug()<<"PopPointColor:"<<image.pixelColor(point);
+//                    qDebug()<<"oldColor"<<QColor(oldColor);
+//                    qDebug()<<"PopPoint"<<point;
+//                    qDebug()<<"PopPointColor:"<<image.pixelColor(point);
                     int R, L, UpL, DownL,UpR, DownR;
                     L = R =point.x();
-                    qDebug()<<"L"<<L;
-                    qDebug()<<"R"<<R;
+//                    qDebug()<<"L"<<L;
+//                    qDebug()<<"R"<<R;
                     while( R < 1000 && image.pixelColor(QPoint(R,point.y())) == oldColor)
                     {
+//                        paint.drawPoint(R,point.y());
+//                        image = pix.toImage();
                         R++;
                     }
+//                    R--;
                     while( L > 0 && image.pixelColor(QPoint(L-1,point.y())) == oldColor)
                     {
+//                        paint.drawPoint(L,point.y());
+//                        image = pix.toImage();
                         L--;
                     }
+//                    L++;
 //                    for (int i = L; i < R; i++) {//抗锯齿,画点
 //                        paint.drawPoint(QPoint(i,point.y()));
 //                    }
                     paint.drawLine(QPoint(L,point.y()),QPoint(R,point.y()));//填充当前扫描线
-                    paint.drawLine(QPoint(L,point.y()),QPoint(R,point.y()));
-
+//                    paint.drawLine(QPoint(L,point.y()),QPoint(R,point.y()));
                     image = pix.toImage();
 
                     UpL = DownL = L;
                     UpR = DownR = R;
-                    qDebug()<<"L"<<L;
-                    qDebug()<<"R"<<R;
+//                    qDebug()<<"L"<<L;
+//                    qDebug()<<"R"<<R;
 
                     //upL->R
                     while((image.pixelColor(QPoint(UpL,point.y()-1)) != oldColor) && (UpL < R))
                     {
                         ++UpL;
                     }
-                    qDebug()<<"UpL"<<UpL;
+//                    qDebug()<<"UpL"<<UpL;
                     QColor color;
                     color = QColor(image.pixelColor(QPoint(UpL,point.y()-1)));
-                    qDebug()<<"imageColor"<<color;
-                    qDebug()<<"oldColor"<<QColor(oldColor);
-                    qDebug()<<"isimageColor"<<(image.pixelColor(QPoint(UpL,point.y()-1)) == oldColor);
+//                    qDebug()<<"imageColor"<<color;
+//                    qDebug()<<"oldColor"<<QColor(oldColor);
+//                    qDebug()<<"isimageColor"<<(image.pixelColor(QPoint(UpL,point.y()-1)) == oldColor);
                     if(image.pixelColor(QPoint(UpL,point.y()-1)) == oldColor
                             && drawRange.contains(QPoint(UpL,point.y()-1)))
                     {
@@ -775,10 +793,10 @@ void Painter::paintEvent(QPaintEvent *)
                     {
                         --UpR;
                     }
-                    qDebug()<<"UpR"<<UpR;
-                    qDebug()<<"imageColor"<<QColor(image.pixelColor(QPoint(UpR,point.y()-1)));
-                    qDebug()<<"oldColor"<<QColor(oldColor);
-                    qDebug()<<"isimageColor"<<(image.pixelColor(QPoint(UpR,point.y()-1)) == oldColor);
+//                    qDebug()<<"UpR"<<UpR;
+//                    qDebug()<<"imageColor"<<QColor(image.pixelColor(QPoint(UpR,point.y()-1)));
+//                    qDebug()<<"oldColor"<<QColor(oldColor);
+//                    qDebug()<<"isimageColor"<<(image.pixelColor(QPoint(UpR,point.y()-1)) == oldColor);
 
                     if(image.pixelColor(QPoint(UpR,point.y()-1)) == oldColor
                             && drawRange.contains(QPoint(UpR,point.y()-1)))
@@ -793,8 +811,8 @@ void Painter::paintEvent(QPaintEvent *)
                         DownL++;
                     }
 
-                    qDebug()<<"DownL"<<DownL;
-                    qDebug()<<"imageColor"<<image.pixelColor(QPoint(DownL,point.y()+1));
+//                    qDebug()<<"DownL"<<DownL;
+//                    qDebug()<<"imageColor"<<image.pixelColor(QPoint(DownL,point.y()+1));
                     if(image.pixelColor(QPoint(DownL,point.y()+1)) == oldColor
                             && drawRange.contains(QPoint(DownL,point.y()-1)))
                     {
@@ -805,7 +823,7 @@ void Painter::paintEvent(QPaintEvent *)
                     {
                         DownR--;
                     }
-                    qDebug()<<"DownR"<<DownR;
+//                    qDebug()<<"DownR"<<DownR;
                     if(image.pixelColor(QPoint(DownR,point.y()+1)) == oldColor
                             && drawRange.contains(QPoint(DownR,point.y()-1)))
                     {
@@ -813,7 +831,7 @@ void Painter::paintEvent(QPaintEvent *)
                     }
                 }
                 delete stack;
-                qDebug()<<"cPoints.size："<<cPoints.size();
+//                qDebug()<<"cPoints.size："<<cPoints.size();
             }
 
         }
@@ -1065,12 +1083,11 @@ void Painter::paintEvent(QPaintEvent *)
                 pen.setColor(Qt::red);
                 pen.setWidth(3);
                 p.setPen(pen);
-                p.drawPoint(point);
+                //p.drawPoint(point);
                 qDebug()<<"UpPoint"<<image.pixelColor(QPoint(point.x(),point.y()-1));
                 qDebug()<<"DownPoint"<<image.pixelColor(QPoint(point.x(),point.y()+1));
                 qDebug()<<"RightPoint"<<image.pixelColor(QPoint(point.x()+1,point.y()));
                 qDebug()<<"LeftPoint"<<image.pixelColor(QPoint(point.x()-1,point.y()));
-
             }
         }
             break;
@@ -1388,7 +1405,7 @@ void Painter::mousePressEvent(QMouseEvent * e)//点击鼠标左键
                     startPoint = e->pos();
                     moveStartPoint = e->pos();
                     movePoint = e->pos();
-
+                    myPaintPath.moveTo(movePoint);
                     qDebug () <<"UseMousePressPoint:"<<movePoint;
                     qDebug () <<"perPoint.size():"<<perPoint.size();
                     points.append(movePoint);
@@ -1536,6 +1553,7 @@ void Painter::mouseMoveEvent(QMouseEvent * e)//移动鼠标左键
                 qDebug () <<"points.size():"<<points.size();
                 qDebug () <<"MovestartPoint:"<<moveStartPoint;
                 qDebug () <<"MovePoint:"<<movePoint;
+                myPaintPath.lineTo(movePoint);
 
             }
                 break;
@@ -1678,6 +1696,8 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
     {
         if(e->buttons() != Qt::LeftButton)
         {
+            times++;//绘画顺序
+
             movePoint = e->pos();
             isDrawing = false;
 
@@ -1696,9 +1716,14 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
                 qDebug() <<"perPoint.size()" << perPoint.size();
                 points.clear();
                 qDebug() <<"points.size()" << points.size();
-                myPaintPath.clear();
-                paintPath();
 
+                myPaintPath.lineTo(movePoint);
+                qDebug() <<"myPaintPath" << myPaintPath;
+                myPainterPaths.append(myPaintPath);
+                qDebug() <<"myPainterPaths" << myPainterPaths.size();
+                myPaintPath.clear();
+                //paintPath();
+                typeCounts.append(PEN);
             }
             case UseEraser:
             {
@@ -1718,7 +1743,7 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
             }
                 break;
             case FillPolygon:
-
+                qDebug()<<"mPainterPaths.size:"<<myPainterPaths.size();
                 break;
             case UseLine:
             {
@@ -1773,12 +1798,17 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
                     perLine.replace(whichLine,lines.last());//把最终画好的线段替换到容器中
 
                 }
+                else
+                {
+                    typeCounts.append(LINE);
 
-                //                qDebug () <<"ReleaseStartPoint:"<<startPoint;
-                qDebug () <<"ReleaseEndPoint:"<<movePoint;
-                qDebug ()<<"lines.lastpoint:"<<lines.last();
-                myPaintPath.clear();
-                paintPath();
+                    //                qDebug () <<"ReleaseStartPoint:"<<startPoint;
+                    qDebug () <<"ReleaseEndPoint:"<<movePoint;
+                    qDebug ()<<"lines.lastpoint:"<<lines.last();
+                    myPaintPath.clear();
+                    paintPath();
+                }
+
             }
                 break;
             case UseRect:
@@ -1819,6 +1849,7 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
                 {
                     rects.append(QRect(startPoint,point));
                     perRect.append(rects.last());
+                    typeCounts.append(RECTANGLE);
                 }
                 myPaintPath.clear();
                 paintPath();
@@ -1846,16 +1877,17 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
                         staticStartPoint = perEllipse[whichEllipse].topLeft();
                         staticEndPoint = perEllipse[whichEllipse].bottomRight();
                         perEllipse.replace(whichEllipse,ellipses.last());
-
                     }
                 }
                 else
                 {
                     ellipses.append(QRect(startPoint,point));
                     perEllipse.append(ellipses.last());
+                    typeCounts.append(ELLIPLISE);
                 }
                 myPaintPath.clear();
                 paintPath();
+
             }
                 break;
             case Clear:
@@ -1864,12 +1896,11 @@ void Painter::mouseReleaseEvent(QMouseEvent * e)//释放鼠标左键
 
             qDebug () <<"ReleaseMovePoint:"<<movePoint<<"---------------------------------------------";
             qDebug () <<"isDrawing:"<<isDrawing;
-
-            int mPainterPaths = myPainterPaths.size();
-            qDebug()<<"mPainterPaths.size:"<<mPainterPaths;
+            qDebug () <<"typeCounts:"<<typeCounts;
+            qDebug () <<"typeCounts.size:"<<typeCounts.size();
+            qDebug()<<"mPainterPaths.size:"<<myPainterPaths.size();
             update();
         }
-
     }
 }
 
@@ -1925,12 +1956,7 @@ bool Painter::isInEndpointP1 (QPoint &p1,QPoint &p2, QPoint &p)
 
 bool Painter::isInRectPoint(QPoint &p1, QPoint &p2, QPoint &p )
 {
-    /*求另外两个顶点，以每一顶点为中心，定长为半径的范围做标准*/            /*      o-------o
-                                                                 *      |       |
-                                                                 *      |       |
-                                                                 *      |       |
-                                                                 *      o-------o
-                                                                 */
+    /*求另外两个顶点，以每一顶点为中心，定长为半径的范围做标准*/
     QPoint p3,p4;//正向的p3在左下
     int xdis = p2.x() - p1.x();
     p3 = QPoint(p2.x()-xdis,p2.y());
@@ -1941,16 +1967,6 @@ bool Painter::isInRectPoint(QPoint &p1, QPoint &p2, QPoint &p )
     double pP3=dis(p,p3);
     double pP4=dis(p,p4);
     double radius = abs(xdis/8);         //radius可能为负数
-    //    QRect rectRange;
-    //    判断画矩形的起始点，小点在左上，大点在右下
-    //    if((p1.x()>p2.x()) & (p1.y()>p2.y()))
-    //        rectRange = QRect(p2,p1);
-    //    else if((p1.x()<p2.x()) & (p1.y()>p2.y()))
-    //        rectRange = QRect(p3,p4);
-    //    else if((p1.x()<p2.x()) & (p1.y()<p2.y()))
-    //        rectRange = QRect(p1,p2);
-    //    else
-    //        rectRange = QRect(p4,p3);
     QRect rectRange = QRect(p1,p2);
     if(pP1 <= radius)//检测靠近哪一点，记录靠近的点和对角顶点，再判断是否在矩形内
     {
@@ -1990,10 +2006,10 @@ bool Painter::isInRectPoint(QPoint &p1, QPoint &p2, QPoint &p )
 bool Painter::isInEllipse(QPoint &p1, QPoint &p2, QPoint &p )
 {
     QRect rectRange = QRect(p1,p2);
-    return rectRange.contains(p) ? true :false;
+    return rectRange.contains(p) ? true : false;
 }
 
-void Painter::loadXML()
+void Painter::loadXML()//这个没有读取颜色
 {
     clickRect = false;
     clickLine = false;
@@ -2019,10 +2035,10 @@ void Painter::loadXML()
 
         if(type == QXmlStreamReader::StartElement /*&& !reader.isWhitespace()*/)
         {
-            //                qDebug()<<"Type:"<<type;
+            //qDebug()<<"Type:"<<type;
             QString nameStr = reader.name().toString();
             qDebug()<<"nameStr:"<<nameStr;//查看每个StartElement
-
+#if 0
             if(nameStr == "image")
             {
                 QString image_str = reader.readElementText();
@@ -2045,6 +2061,7 @@ void Painter::loadXML()
                 qDebug()<<"LoadFromData:"<<isloadPixmap;
                 pix = pixmap;
             }
+#endif
             //点集合，每一个reader.readNext()进入下一层
             if(nameStr == "POINTS")
             {
@@ -2103,7 +2120,7 @@ void Painter::loadXML()
             if(nameStr == "LEndpointY")
             {
                 qDebug()<<"reader.text():"<<reader.text();//换了个debug位置就赋值进去了？？？？
-                lEndpointY = reader.readElementText().toInt();//before:qDebug()<<"lEndpointY:"<<readElementText();
+                lEndpointY = reader.readElementText().toInt();
                 qDebug()<<"lEndpointY:"<<lEndpointY;
                 isLineChanged = true;
             }
@@ -2215,13 +2232,25 @@ void Painter::saveXML()
     rects.clear();
     QPixmap pixmap = pix;
     QImage image = pixmap.toImage();//要保存的图片
+
     QVector<QLine> line = perLine;//保存的线段数据
     QVector<QRect> rect = perRect;//要保存的矩形数据
     QVector<QRect> ellipse = perEllipse;//要保存的椭圆数据
     QVector<QVector<QPoint>> points = perPoint;//点集合
+    QVector<QPainterPath> painterPaths;
+    int pointIndex = 0;
+    int lineIndex = 0;
+    int rectIndex = 0;
+    int elliIndex = 0;
+
+
+    painterPaths = myPainterPaths;
+    qDebug()<<"painterPaths"<<painterPaths;
+    qDebug()<<"painerPaths.size"<<painterPaths.size();
+
     QRgb rgb = (_color.red(),_color.green(),_color.blue());//每画一笔，记下颜色
     qDebug()<<"RGB"<<rgb;
-
+#if 0
     QByteArray ba;
     QBuffer buffer(&ba);
     if(!buffer.open(QIODevice::WriteOnly))
@@ -2232,7 +2261,7 @@ void Painter::saveXML()
     buffer.close();
     QByteArray array = ba.toHex();
     QString tmp = array;
-
+#endif
     QString fileName = QFileDialog::getSaveFileName(this,"Save XML","",QString("XML (*.xml)"));
     QFile file;
     file.setFileName(fileName);
@@ -2242,12 +2271,65 @@ void Painter::saveXML()
     QXmlStreamWriter stream(&file);
     stream.setAutoFormatting(true);
     stream.writeStartDocument();
-    stream.writeStartElement("file");
 
+#if 0
     stream.writeTextElement("image",tmp);
-
+#endif
     stream.writeStartElement("VECTOR");
 
+    qDebug()<<"typeCounts"<<typeCounts;
+    if(typeCounts.size())
+    {
+        stream.writeStartElement("TYPE");
+        for (int i = 0; i < typeCounts.size(); i++) {
+            stream.writeTextElement("TypeCount", QString::number(typeCounts.at(i)));
+            switch (typeCounts.at(i)) {
+            case PEN:
+                stream.writeStartElement("POINTS");
+                for (int j = 0; j < points.at(pointIndex).size(); j++) {
+                    stream.writeStartElement("Point");
+                    stream.writeTextElement("PointX",QString::number(points[pointIndex][j].x()));
+                    stream.writeTextElement("PointY",QString::number(points[pointIndex][j].y()));
+                    stream.writeEndElement();
+                }
+                stream.writeEndElement();
+                pointIndex++;
+                break;
+            case LINE:
+                stream.writeStartElement("LINES");
+                stream.writeTextElement("LStartPointX",QString::number(line[lineIndex].p1().x()));
+                stream.writeTextElement("LStartPointY",QString::number(line[lineIndex].p1().y()));
+                stream.writeTextElement("LEndpointX",QString::number(line[lineIndex].p2().x()));
+                stream.writeTextElement("LEndpointY",QString::number(line[lineIndex].p2().y()));
+                stream.writeEndElement();
+                lineIndex++;
+                break;
+            case RECTANGLE:
+                stream.writeStartElement("RECTANGLES");
+                stream.writeTextElement("RStartPointX",QString::number(rect[rectIndex].topLeft().x()));
+                stream.writeTextElement("RStartPointY",QString::number(rect[rectIndex].topLeft().y()));
+                stream.writeTextElement("REndpointX",QString::number(rect[rectIndex].bottomRight().x()));
+                stream.writeTextElement("REndpointY",QString::number(rect[rectIndex].bottomRight().y()));
+                stream.writeEndElement();
+                rectIndex++;
+                break;
+            case ELLIPLISE:
+                stream.writeStartElement("ELLIPSES");
+                qDebug()<<"ellipse.size"<<ellipse.size();
+                qDebug()<<"topLeftX"<<ellipse[elliIndex].topLeft().x();
+                stream.writeTextElement("EStartPointX",QString::number(ellipse[elliIndex].topLeft().x()));
+                stream.writeTextElement("EStartPointY",QString::number(ellipse[elliIndex].topLeft().y()));
+                stream.writeTextElement("EEndpointX",QString::number(ellipse[elliIndex].bottomRight().x()));
+                stream.writeTextElement("EEndpointY",QString::number(ellipse[elliIndex].bottomRight().y()));
+                stream.writeEndElement();
+                elliIndex++;
+                break;
+            }
+        }
+        stream.writeEndElement();
+    }
+
+#if 0
     if(points.size())
     {
         stream.writeStartElement("POINTS");
@@ -2325,6 +2407,7 @@ void Painter::saveXML()
         }
         stream.writeEndElement();
     }
+#endif
     stream.writeEndElement();
     stream.writeEndDocument();
     file.close();
@@ -2342,14 +2425,6 @@ void Painter::drawPicture()
 {
     drawType = DrawPicture;
 }
-
-
-
-//void Painter::pointFill(QImage *image, QPoint *point, QColor oldColor, QColor newColor)
-//{
-//    int fillL, fillR, i, in_line;
-
-//}
 
 
 

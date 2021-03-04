@@ -11,34 +11,21 @@
 #include <QXmlStreamReader>
 #include <QStack>
 
-#define PUSH( Y, L, R, PREV_L, PREV_R, DIR )  \
-{                                                 \
-    tail->y = (ushort)(Y);                        \
-    tail->left = (ushort)(L);                     \
-    tail->right = (ushort)(R);                    \
-    if( ++tail == buffer_end )                    \
-    {                                             \
-        buffer->resize(buffer->size() * 3/2);     \
-        tail = &buffer->front() + (tail - head);  \
-        head = &buffer->front();                  \
-    }                                             \
-}
-
-#define POP( Y, L, R, PREV_L, PREV_R, DIR )   \
-{                                                 \
-    --tail;                                       \
-    Y = tail->y;                                  \
-    L = tail->left;                               \
-    R = tail->right;                              \
-}
-
-
-
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class Painter; }
 QT_END_NAMESPACE
 
+enum PaintType{
+    PEN,
+    LINE,
+    RECTANGLE,
+    ELLIPLISE
+};
+
+//struct TypeCount{
+//    int index;
+//    PaintType type;
+//};
 class Painter : public QMainWindow
 {
     Q_OBJECT
@@ -119,21 +106,6 @@ public:
 
     QString fileNName;
 
-    enum
-    {
-        UP = 1,
-        DOWN = -1
-    };
-    struct FFillSegment
-    {
-        ushort y;
-        ushort left;
-        ushort right;
-//        ushort prevl;
-//        ushort prevr;
-//        int dir;
-    };
-
     void floodFill(QPainter &paint, QImage &image, QPoint &seedPoint, QColor newColor);
     void seekAndPaint(QImage &image, int &preL, int &preR, int &left, int &right, QColor &oldColor, int &moveY, QPainter &paint);
 
@@ -143,7 +115,7 @@ private:
     bool perDeletee = false;
 
     QColor multiColor;
-    QPixmap pix = QPixmap(1000,750);//最终放在界面上的画布
+    QPixmap pix = QPixmap(1580,882);//最终放在界面上的画布
     QPixmap tmpPixmap;//临时画布
     QPoint movePoint;//移动点
 
@@ -224,7 +196,7 @@ private:
 
     bool releaseMouse = false; //松开鼠标标志，用来最后把存储的路径画出来标志
 
-    QRect drawRange = QRect(QPoint(0,23),QSize(1000,730));
+    QRect drawRange = QRect(QPoint(0,23),QSize(1580,882));
 
     QXmlStreamReader reader;
 
@@ -233,8 +205,10 @@ private:
     bool isRectChanged = false;
     bool isEllipseChanged = false;
 
-
+    int times = 0;
     QVector<QPainterPath> myPainterPaths;
     int element = 0;
+
+    QList<int> typeCounts;//绘画步骤
 };
 #endif // PAINTER_H
