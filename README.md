@@ -1,7 +1,7 @@
 # Painter
 QT For Painter
 
-Version: Qt 5.14.1
+Version: Qt 5.14.2
 
 Paint with line, rectangle and ellipse
 
