@@ -11,4 +11,4 @@ Save as picture or xml and open them
 
 Change color for pen 
 
-Fill
+Fill color
